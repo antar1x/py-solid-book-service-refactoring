@@ -1,37 +1,41 @@
 import json
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ElementTree
 from abc import ABC, abstractmethod
 
 
 class Book:
-    def __init__(self, title: str, content: str):
+    def __init__(self, title: str, content: str) -> None:
         self.title = title
         self.content = content
 
 
-# --- Display ---
 class IBookDisplay(ABC):
     @abstractmethod
-    def display(self, book: Book) -> None: ...
+    def display(self, book: Book) -> None:
+        pass
+
 
 class ConsoleDisplay(IBookDisplay):
     def display(self, book: Book) -> None:
         print(book.content)
+
 
 class ReverseDisplay(IBookDisplay):
     def display(self, book: Book) -> None:
         print(book.content[::-1])
 
 
-# --- Print ---
 class IBookPrinter(ABC):
     @abstractmethod
-    def print_book(self, book: Book) -> None: ...
+    def print_book(self, book: Book) -> None:
+        pass
+
 
 class ConsolePrinter(IBookPrinter):
     def print_book(self, book: Book) -> None:
         print(f"Printing the book: {book.title}...")
         print(book.content)
+
 
 class ReversePrinter(IBookPrinter):
     def print_book(self, book: Book) -> None:
@@ -39,23 +43,25 @@ class ReversePrinter(IBookPrinter):
         print(book.content[::-1])
 
 
-# --- Serialize ---
 class IBookSerializer(ABC):
     @abstractmethod
-    def serialize(self, book: Book) -> str: ...
+    def serialize(self, book: Book) -> str:
+        pass
+
 
 class JsonSerializer(IBookSerializer):
     def serialize(self, book: Book) -> str:
         return json.dumps({"title": book.title, "content": book.content})
 
+
 class XmlSerializer(IBookSerializer):
     def serialize(self, book: Book) -> str:
-        root = ET.Element("book")
-        title = ET.SubElement(root, "title")
+        root = ElementTree.Element("book")
+        title = ElementTree.SubElement(root, "title")
         title.text = book.title
-        content = ET.SubElement(root, "content")
+        content = ElementTree.SubElement(root, "content")
         content.text = book.content
-        return ET.tostring(root, encoding="unicode")
+        return ElementTree.tostring(root, encoding="unicode")
 
 
 if __name__ == "__main__":
