@@ -70,6 +70,7 @@ if __name__ == "__main__":
     ReverseDisplay().display(sample_book)
     print(XmlSerializer().serialize(sample_book))
 
+
 def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
     display_map = {
         "console": ConsoleDisplay(),
@@ -91,4 +92,3 @@ def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
             print_map[method_type].print_book(book)
         elif cmd == "serialize":
             return serialize_map[method_type].serialize(book)
-
