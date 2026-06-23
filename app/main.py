@@ -69,3 +69,26 @@ if __name__ == "__main__":
 
     ReverseDisplay().display(sample_book)
     print(XmlSerializer().serialize(sample_book))
+
+def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
+    display_map = {
+        "console": ConsoleDisplay(),
+        "reverse": ReverseDisplay(),
+    }
+    print_map = {
+        "console": ConsolePrinter(),
+        "reverse": ReversePrinter(),
+    }
+    serialize_map = {
+        "json": JsonSerializer(),
+        "xml": XmlSerializer(),
+    }
+
+    for cmd, method_type in commands:
+        if cmd == "display":
+            display_map[method_type].display(book)
+        elif cmd == "print":
+            print_map[method_type].print_book(book)
+        elif cmd == "serialize":
+            return serialize_map[method_type].serialize(book)
+
